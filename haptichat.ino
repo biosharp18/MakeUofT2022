@@ -1,14 +1,14 @@
-//www.elegoo.com
-//2016.12.08
-// Declaration and initialization of the input pin
+
 #include <math.h>
 void setup ()
 {
+ //Analog input for microphone array
  pinMode(A0, INPUT);
  pinMode(A1, INPUT);
  pinMode(A2, INPUT);
  pinMode(3, OUTPUT);
  Serial.begin (9600); // Serial output with 9600 bps
+ //digital output for haptic motors
  pinMode(0 ,OUTPUT);
  pinMode(1 ,OUTPUT);
  pinMode(2 ,OUTPUT);
@@ -16,8 +16,7 @@ void setup ()
  pinMode(4 ,OUTPUT);
  pinMode(5 ,OUTPUT);
 }
-// The program reads the current value of the input pins
-// and outputs it via serial out
+//define previous value of sound intensity
 float prev_val0 = 0;
 float prev_val1 = 0;
 float prev_val2 = 0;
@@ -33,8 +32,9 @@ void loop ()
  float cur_val0 = analogRead(A0);
  float cur_val1 = analogRead(A1);
  float cur_val2 = analogRead(A2);
+ //check previous value and current value for spike
  if(pow(cur_val0 - prev_val0,2) > 20 && pow(cur_val1 - prev_val1,2) > 20){
-  int haptic_tobe_activated = round(cur_val0/(cur_val0 + cur_val1));
+  int haptic_tobe_activated = round(cur_val0/(cur_val0 + cur_val1)); //dynamically choose to activate closest haptic to sound
   digitalWrite(haptic_tobe_activated, HIGH);
  }
  if(pow(cur_val1 - prev_val1,2) > 20 && pow(cur_val2 - prev_val2,2) > 20){
